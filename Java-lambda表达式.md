@@ -26,7 +26,7 @@ class LengthComparator implements Comparable<String> {
   }
 }
 ...
-    Arrays.sort(strings,new LengthComparator());
+Arrays.sort(strings, new LengthComparator());
 ```
 
 这两份例子有一些共同点，都是将一个代码块传递到某个目标，这个代码块会在将来某个时间调用。
@@ -35,13 +35,13 @@ class LengthComparator implements Comparable<String> {
 
 再来考虑上一节讨论排序的例子。我们传入代码来检查一个字符串是否比另一个字符串短。这里要计算：
 
-```
+```java
 first.length() - second.length()
 ```
 
 first和second是什么？它们都是字符串。我们要指定它们的类型：
 
-```
+```java
 (String first, String second) ->
   first.length - second.length()
 ```
@@ -52,17 +52,17 @@ first和second是什么？它们都是字符串。我们要指定它们的类型
 如果代码要完成的计算无法放在一个表达式中，就可以像写方法一样，把这些代码放在 `{}` 中，并包含显示的 `retrun` 语句。例如：
 
 ```java
-(String first,String second)->{
-    if(first.length()<second.length())return-1;
-    else if(first.length()>second.length())return 1;
+(String first, String second)->{
+    if(first.length() < second.length())  return-1;
+    else if(first.length() > second.length()) return 1;
     else return 0;
-    }
+}
 ```
 
 即使lambda表达式没有参数，仍要提供空括号，就像无参数方法一样：
 
 ```java
-()->{for(int i=100;i>=0;i--)System.out.println(i);}
+()->{for(int i=100;i>=0;i--)  System.out.println(i);}
 ```
 
 如果可以推导一个lambda表达式的类型参数，则可以忽略其类型。例如：
@@ -77,14 +77,14 @@ Comparator<String> comp=(first,second)->
 如果方法只有一个参数，而且这个参数的类型可以推导得出，那么甚至还可以省略小括号：
 
 ```java
-ActionListener listener=event->
+ActionListener listener = event->
     System.out.println("The time is "
     +Instant.ofEpochMilli(event.getWhen()));
 ```
 
 无须指定lambda表达式的返回类型。lambda表达式的返回值类型总是会由上下文推导得出。例如，下面的表达式
 
-```
+```java
 (String first, String second) -> first.length() - second.length()
 ```
 
@@ -92,7 +92,7 @@ ActionListener listener=event->
 
 最后，可以使用 `var` 指示一个推导的类型。这不常见，发明这个语法是为了关联注解。
 
-```
+```java
 (@NonNull var first, @NonNull var second) -> first.length() - second.length()
 ```
 
@@ -104,7 +104,7 @@ Java有很多封装代码块的接口，如 `ActionListener` 或 `Comparator` �
 
 下面考虑 `Arrays.sort` 方法。它的第二个参数需要一个 `Comparator` 实例，Comparator就是只有一个方法的接口，所以可以提供一个lambda表达式：
 
-```
+```java
 Arrays.sort(words,
     (first, second) -> first.lenght() - second.length());
 ```
@@ -113,7 +113,7 @@ Arrays.sort(words,
 
 lambda表达式可以转换为接口：
 
-```
+```java
 var timer = new Timer(1000, event -> {
   System.out.println("At the tone, the time is "
     + Instant.ofEpochMilli(event.getWhen()));
@@ -169,7 +169,7 @@ public interface Supplier<T> {
 
 供应者（supplier）没有参数，调用时会生成一个T类型的值。供应者用于实现 **懒计算(lazy evaluation)** 。例如，考虑以下调用：
 
-```
+```java
 LocalDate hireDay = Objects.requireNonNullElse(day,
     LocalDate.of(1970, 1, 1));
 ```
@@ -177,7 +177,7 @@ LocalDate hireDay = Objects.requireNonNullElse(day,
 这不是最优的，我们 预计day很少为null，所以希望只在必要时才构造默认的 `LocalDate` 。
 通过使用供应者，我们就能延迟这个计算：
 
-```
+```java
 LocalDate hireDay = Objects.requireNonNullElse(day,
     () -> LocalDate.of(1970, 1, 1));
 ```
@@ -188,13 +188,13 @@ LocalDate hireDay = Objects.requireNonNullElse(day,
 
 有时，lambda表达式设计一个方法引用。例如，假设你希望只要出现一个定时器时间就打印这个事件对象。当然，为此也可以调用：
 
-```
+```java
 var timer = new Timer(1000, event -> System.out.println(event));
 ```
 
 但是，如果直接把 `println` 方法传递到 `Timer` 构造器就更好了。具体做法如下：
 
-```
+```java
 var time = new Timer(1000, System.out::println);
 ```
 
@@ -207,7 +207,7 @@ var time = new Timer(1000, System.out::println);
 
 再来看一个例子，假设你想对字符串进行排序，而不考虑字幕的大小写。可以传递以下方法表达式：
 
-```
+```java
 Arrays.sort(strings, String::compareToIgnoreCase)
 ```
 
@@ -281,7 +281,7 @@ class RepeatedGreeter extends Greeter {
 例如， `Person::new` 是 `Person` 构造器的一个引用。哪一个构造器呢？这取决于上下文。
 可以在各个字符串上调用构造器，把这个字符串列表转换为一个 `Person` 对象数组，调用如下：
 
-```
+```java
 ArratList<String> names = ...;
 Stream<Person> stream = names.stream().map(Person::new);
 List<Person> people = stream.toList();
@@ -297,13 +297,13 @@ Java无法构造泛型类型T的数组。数组构造器引用对于克服这个
 例如，我们需要一个 `Person` 对象数组。
 `Stream` 接口有一个 `toArray` 方法可以返回Object数组：
 
-```
+```java
 Object[] people = stream.toArray();
 ```
 
 不过，这并不让人满意。流库利用构造器引用解决了这个问题。可以把 `Person[]::new` 传入 `toArray` 方法：
 
-```
+```java
 Person[] people = stream.toArray(Person[]::new);
 ```
 
@@ -313,7 +313,7 @@ Person[] people = stream.toArray(Person[]::new);
 
 通常，你可能希望能够在lambda表达式种访问外围方法或类中的变量。考虑下面这个例子：
 
-```
+```java
 public static void repeatMessage(String text, int delay){
     ActionListener listener = event->{
       System.out.println(text);
@@ -348,7 +348,7 @@ lambda表达式有3个部分：
 可以看到，lambda表达式可以捕获外围作用域变量的值。在Java中，为了确保所有捕获的值式明确定义的，这里有一个重要的限制。
 在lambda表达式中，只能引用值不会改变的变量。例如，下面的做法是不合法的：
 
-```
+```java
 public static void countDown(int start, int delay) {
   ActionListener listener = event -> {
     start--;    // Error: can't mutate caputured variable
@@ -364,7 +364,7 @@ public static void countDown(int start, int delay) {
 另外如果在lambda表达式中引用一个变量，而这个变量可能在外部改变，这也是不合法的。
 例如，下面就是不合法的：
 
-```
+```java
 public static void repeat(String text, int count) {
   for(int i = 1; i <= count; i++) {
     Actionlistener listener = event -> {
@@ -384,7 +384,7 @@ lambda表达式的体与 *嵌套块有相同的作用域*。
 这里同样使用命名冲入和遮蔽有关的规则。
 在lambda表达式中声明一个与局部变量同名的参数或局部变量是不合法的。
 
-```
+```java
 Path first = Path.of("/usr/bin");
 Comparator<String> comp =
     (first, second) -> first.length() - second.length();
@@ -433,7 +433,7 @@ repeat(10,()->System.out.println("Hello, world!"));
 要接收这个lambda表达式，需要选择一个函数式接口。表格列出了Java
 API中提供的最重要的函数式接口。在这里，我们可以使用 `Runnable` 接口：
 
-```
+```java
 public static void repeat(int n, Runnable action) {
   for(int i = 0; i < n; i++)
     action.run();
@@ -467,7 +467,7 @@ public interface IntConsumer {
 
 下面给出 `repeat` 方法的改进版本：
 
-```
+```java
 public static void repeat(int n, IntConsumer action) {
   for(int i = 0; i < n; i++)
     action.accept(i);
@@ -476,7 +476,7 @@ public static void repeat(int n, IntConsumer action) {
 
 可以如下调用：
 
-```
+```java
 repeat(10, i-> System.out.println("Countdown: " + (9 - i)));
 ```
 
@@ -546,7 +546,7 @@ Arrays.sort(people,Comparator.comparing(Person::getName));
 
 可以把比较器与 `thenComparing` 方法串起来，来处理比较结果相同得情况。例如：
 
-```
+```java
 Arrays.sort(people,
     Comparator.comparing(Person::getLastName)
     .thenComparing(Person::getFirstName));
@@ -556,7 +556,7 @@ Arrays.sort(people,
 
 这些方法有很多变体形式。可以为 `comparing` 和 `thenComparing` 方法提取得键指定一个比较器。例如，可以如下根据人名长度完成排序：
 
-```
+```java
 Arrays.sort(people,Comparator.comparing(Person::getName,
     (s,t)->Integer.compare(s.length,t.length())));
 ```
@@ -564,7 +564,7 @@ Arrays.sort(people,Comparator.comparing(Person::getName,
 另外，`comparing` 和 `thenComparing` 方法都有变体形式，可以避免int，long，double值的装箱。
 要完成前一个操作，还有一种更容易的做法：
 
-```
+```java
 Arrays.sort(people, Comparator.comparingInt(p->p.getName().length()));
 ```
 
@@ -578,7 +578,7 @@ Arrays.sort(people, Comparator.comparingInt(p->p.getName().length()));
 在这里， `Comparator.<String>naturalOrder()` 正是我们所需要的。
 下面是一个完整的调用，可以按可能为null的中名进行排序。注意 `naturalOrder` 的类型会推导得出。
 
-```
+```java
 Arrays.sort(people, comparing(Person::getMiddleName, nullsFirst(naturalOrder())));
 ```
 
