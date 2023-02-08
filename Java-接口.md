@@ -253,9 +253,7 @@ public class Bag implements Collection
 如果现在一个接口中将一个方法定义为默认方法，然后又在超类或另一个接口中定义了同样的方法，规则如下：
 
 1. 超类优先。如果超类提供了一个具体的方法，同名且有相同参数类型的默认方法会被忽略。
-2.
-
-接口冲突。如果一个接口提供了一个默认人方法，另一个接口提供了一个同名且有相同参数类型的方法（不论是否是默认方法），必须覆盖这个方法来解决冲突。  
+2. 接口冲突。如果一个接口提供了一个默认方法，另一个接口提供了一个同名且有相同参数类型的方法（不论是否是默认方法），必须覆盖这个方法来解决冲突。  
 下面来看第二个规则。考虑两个包含 `getName` 方法的接口：
 
 ```java
@@ -389,7 +387,7 @@ class LengthComparator implements Comparable<String> {
 
 具体完成比较时，需要建立一个实例：
 
-```
+```java
 var comp = new LengthComparator();
 if (comp.compare(words[i], words[j] > 0) ...
 ```
@@ -398,7 +396,7 @@ if (comp.compare(words[i], words[j] > 0) ...
 
 要对一个数组排序，需要为 `Array.sort()` 方法传入一个 `LengthComparator` 对象：
 
-```
+```java
 String[] friends = {"Peter", "Paul", "Mary"};
 Arrays.sort(friends, new LengthComparator());
 ```
