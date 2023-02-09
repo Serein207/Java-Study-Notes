@@ -264,7 +264,7 @@ new InterfaceType() {
 ```java
 var queen=new Person("Marry");
 // a Person object
-    var count=new Person("Dracula"){...};
+var count=new Person("Dracula"){...};
 // an object of an inner class extending Person
 ```
 
