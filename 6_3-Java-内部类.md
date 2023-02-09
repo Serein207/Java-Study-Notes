@@ -310,7 +310,7 @@ public void start(int interval, boolean beep) {
 > ```
 > 注意这里的双括号。外层括号建立了ArrayList的一个匿名子类。内层括号则是一个对象初始化块。
 >
-> 在实际中，这个技巧很少使用。大多数情况下， `invite` 方法会接收任何 `ListAString>` ，
+> 在实际中，这个技巧很少使用。大多数情况下， `invite` 方法会接收任何 `List<String>` ，
 > 所以可以直接传入 `List.of("Haary", "Tony")` 。
 
 ## 静态内部类
