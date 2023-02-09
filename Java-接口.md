@@ -270,8 +270,7 @@ interface Named {
 如果有一个类同时实现了这两个接口会怎么样呢？
 
 ```java
-class Student implements Person, Named {...
-} 
+class Student implements Person, Named {...} 
 ```
 
 这个类会继承Person和Named接口提供的两个不一样的 `getName` 方法。Java编译器会报告一个错误，让程序员解决二义性问题。
