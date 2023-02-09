@@ -68,7 +68,7 @@ public class TimePrinter implements ActionListener {
 外部类的引用在构造器中设置。编译器会修改所有的内部类的构造器，添加一个对应外部类引用的参数。
 因为 `TimePrinter` 类没有定义构造器，所以编译器为这个类生成了一个无参数构造器，生成的代码如下所示：
 
-```
+```java
 public TimePrinter(TalkingClock clock) {
   outer = clock;
 }
@@ -78,7 +78,7 @@ public TimePrinter(TalkingClock clock) {
 
 在 `start` 方法中构造一个 `TimePrinter` 对象后，编译器就会将当前语音时钟的 `this` 引用传递给这个构造器：
 
-```
+```java
 var listener = new TimePrinter(this);
 ```
 
@@ -102,7 +102,7 @@ OuterClass.this
 表示外部类引用。
 例如，可以像下面这样编写 `TimePrinter` 内部类的 `actionPerformed` 方法：
 
-```
+```java
 public void actionPerformed(ActionEvent event) {
     ...
     if (TalkingClock.this.beep) Toolkit.getDefaultToolkit().beep();
@@ -117,7 +117,7 @@ outerObject.new InnerClass(construction parameters)
 
 例如，
 
-```
+```java
 ActionListener listener = this.new TimePrinter();
 ```
 
@@ -125,7 +125,7 @@ ActionListener listener = this.new TimePrinter();
 通常，`this.` 限定符是多余的。不过，也有可能通过显式地命名将外部类引用设置为其他对象。
 例如，由于 `TimePrinter` 是一个公共内部类，可以为任意的语音时钟构造一个 `TimePrinter` ：
 
-```
+```java
 var jabberer = new TalkingClock(1000, true);
 TalkingClock.TimePrinter listener = jabberer.new TimePrinter();
 ```
@@ -150,7 +150,7 @@ OuterClass.InnerClass
 
 在类似这样的情况下，可以在一个方法中局部地定义这个类。
 
-```
+```java
 public void start(){
   class TimePrinter implements ActionListener {
     public void actionPerformed(ActionEvent event) {
@@ -179,7 +179,7 @@ public void start(){
 
 下面是一个典型的示例。这里，将 `TalkingClock` 构造器参数 `interval` 和 `beep` 移至 `start` 方法。
 
-```
+```java
 public void start(int interval, boolean beep){
   class TimePrinter implements ActionListener {
     public void actionPerformed(ActionEvent event) {
@@ -199,7 +199,7 @@ public void start(int interval, boolean beep){
 
 下面这行代码
 
-``` 
+``` java
 if (beep)...
 ```
 
@@ -221,7 +221,7 @@ if (beep)...
 使用局部内部类时，通常还可以再进一步。加入只想要创建这个类的一个对象，甚至不需要为类指定名字。
 这样一个类被称为 **匿名内部类(anonymous inner class)** 。
 
-```
+```java
 public void start(int interval, boolean beep){
   var listener = new ActionListener {
     public void actionPerformed(ActionEvent event) {
@@ -241,7 +241,7 @@ public void start(int interval, boolean beep){
 
 一般地，语法如下：
 
-```
+```java
 new SuperType(construction parameters) {
   // inner class methods and data
 }
@@ -253,7 +253,7 @@ SuperType也可以是一个类，如果是这样，内部类就要拓展这个�
 由于构造器名字必须和类名相同，而匿名内部类没有类名，所以，匿名内部类不能有构造器。
 实际上，构造器要传参数给超类构造器。具体地，只要内部类实现了一个接口，就不能有任何构造参数。不过，仍然要提供一组小括号，如下所示：
 
-```
+```java
 new InterfaceType() {
   // methods and data
 }
@@ -273,7 +273,7 @@ var queen=new Person("Marry");
 > **注释**
 >
 > 尽管匿名类不能有构造器，但可以提供一个对象初始化块：
-> ```
+> ```java
 > var count = new Person("Dracula") {
 >     { /* initialization */ }
 >     ...
@@ -283,7 +283,7 @@ var queen=new Person("Marry");
 多年来，Java程序员习惯的做法是用匿名内部类实现事件监听器和其他回调。
 如今最好还是使用lambda表达式。例如，`start` 方法用lambda表达式来编写会简单得多，如下所示：
 
-```
+```java
 public void start(int interval, boolean beep) {
   var timer = new Timer(interval, event -> {
     System.out.println("At the tone, the time is "
@@ -297,7 +297,7 @@ public void start(int interval, boolean beep) {
 > **注释**
 >
 > 下面的技巧称为 **“双括号初始化”** ，这里利用了内部类语法。假设你想构造一个数组列表，并将它传递到一个方法：
-> ```
+> ```java
 > var friends = new ArrrayList<String>();
 > friends.add("Harry");
 > friends.add("Tony");
@@ -305,7 +305,7 @@ public void start(int interval, boolean beep) {
 > ```
 > 如果不再需要这个数组列表，最好是让他作为一个匿名列表。
 > 不过作为一个匿名列表，该如何为它添加元素呢？方法如下：
-> ```
+> ```java
 > invite(new ArrayList<String>() {{ add("Harry");  add("Tony"); }});
 > ```
 > 注意这里的双括号。外层括号建立了ArrayList的一个匿名子类。内层括号则是一个对象初始化块。
@@ -321,7 +321,7 @@ public void start(int interval, boolean beep) {
 下面是想要使用静态内部类的典型例子。考虑这样一个任务：
 计算数组中的最小值和最大值。如果只遍历数组一次，同时计算出最小值和最大值，这样更为高效。
 
-```
+```java
 double min = Double.POSITIVE_INFINITY;
 double max = Double.NEGATIVE_INFINITY;
 for(double v : values) {
@@ -363,7 +363,7 @@ class ArrayAlg {
 
 这个方法的调用者可以使用 `getFirst()` 和 `getSecond()` 方法来获得答案：
 
-```
+```java
 Pair p = ArrayAlg.minmax(d);
 System.out.println("min = " + p.getFirst());
 System.out.println("max = " + p.getSecond());
@@ -372,14 +372,14 @@ System.out.println("max = " + p.getSecond());
 Pair可能会产生名字冲突，解决这个问题的办法是将Pair定义为ArrayAlg的一个公共内部类。
 这样一来，就可以通过 `ArrayAlg.Pair` 访问这个类了：
 
-```
+```java
 ArrayAlg.Pair p = ArrayAlg.minmax(d);
 ```
 
 不过，与前面例子中所使用的内部类不同，我们不希望Pair对象中有其他对象的引用，维系，可以将这个内部类声明为 `static`
 ，从而不生成那个引用：
 
-```
+```java
 class ArrayAlg {
   public static class Pair{
      ...
@@ -391,7 +391,7 @@ class ArrayAlg {
 当然，只有内部类可以声明为static。静态内部类就类似于其他内部类，只不过静态内部类的对象没有其他外部类对象的引用。
 在我们的示例中，必须使用静态内部类，这是因为内部类对象是在一个静态方法中构造的：
 
-```
+```java
 public static Pair minmax(double[] d) {
   ...
   return new Pair(min, max);
