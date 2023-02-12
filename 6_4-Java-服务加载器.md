@@ -43,7 +43,7 @@ public class CaesarCipher implements Cipher {
 现在把这些类的类名增加到 `META-INF/services` 目录下的一个UTF-8编码的文本文件中,文件名必须与接口的完全限定名一致。在我们的例子中，文件
 `META-INF/services/serviceloader.Cipher` 必须包含这样一行：
 
-```
+```java
 serviceLoader.impl.CaesarCipher
 ```
 
@@ -60,7 +60,7 @@ public static ServiceLoader<Cipher> cipherLoader=ServiceLoader.load(Cipher.class
 服务加载器的 `iterator` 方法会返回一个迭代器来迭代处理所提供的所有服务实现。（有关迭代器的更多信息参见第9章。）
 最容易的做法是使用一个增强的for循环进行遍历。在循环中，选择一个适当的对象来完成服务。
 
-```
+```java
 public static Cipher getCipher(int minStrength) {
   for (Cipher cipher : cipherLoader) {
     if (Cipher.strength() >= minStrength)   return cipher;
@@ -73,7 +73,7 @@ public static Cipher getCipher(int minStrength) {
 这个接口包含 `type` 和 `get` 方法，可以用来得到提供者类和提供者实例。
 如果按类型选择一个提供者，只需要调用 `type`，而没有必要实例化任何服务实例。
 
-```
+```java
 public static Optional<Cipher> getCipher2(int minStrength) {
   return cipherLoader.stream().
     filter(descr->descr.type() == serviceloader.impl.CaesarCipher.class)
@@ -84,7 +84,7 @@ public static Optional<Cipher> getCipher2(int minStrength) {
 
 最后，如果想要得到任何服务实例，只需要调用 `findFirst`：
 
-```
+```java
 Optional<Cipher> cipher = cipherLoader.findFirst();
 ```
 
