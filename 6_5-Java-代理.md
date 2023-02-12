@@ -22,7 +22,7 @@
 调用处理器是实现了`InvocationHandler`接口的类的对象。
 这个接口只有一个方法：
 
-```
+```java
 Object invoke(Object proxy,Method method,Object[]args)
 ```
 
@@ -68,7 +68,7 @@ class TraceHandler implements InvocationHandler {
 
 可以如下构造一个代理对象，只要调用它的某个方法，就会触发跟踪行为：
 
-```
+```java
 Object value=...i
 // construct wrapper
 var handler = new TraceHandler(value);
@@ -85,7 +85,7 @@ Object proxy = Proxy.newProxyInstance(
 这里首先在数组中填充整数1~1000的代理，然后调用Arrays类的 `binarySearch` 方法在数组中查找一个随机整数。
 最后，打印出匹配的元素。
 
-```
+```java
 var elements = new Object[1000];
 // fill elements with proxies for the integers 1 ... 1000
 for (int i = 0; i < elements.length; i++){
@@ -111,7 +111,7 @@ if (result >= 0) System.out.println(elements[result]);
 
 `binarySearch`方法有以下调用：
 
-```
+```java
 if (elements[i].compareTo(key) < 0)  ...
 ```
 
@@ -163,7 +163,7 @@ System.out.println(elements[result]);
 也就是说，如果使用同一个类加载器和接口数组调用两次`newProxyInstance`方法，将得到同一个类的两个对象。
 也可以利用 `getProxyClass` 方法获得这个类：
 
-```
+```java
 Class proxyClass = Proxy.getProxyClass(null, interfaces);
 ```
 
@@ -176,7 +176,7 @@ Class proxyClass = Proxy.getProxyClass(null, interfaces);
 > 调用一个目标代理的默认方法会触发调用处理器。要具体调用这个方法，可以
 > 使用 `InvocationHandler` 接口的静态方法 `invokeDefault`。例如，下面是一个调用处理器，
 > 它会调用默认方法，并把抽象方法传递到另一个目标：
-> ```
+> ```java
 > InvocationHandler handler = (proxy, method, args)-> {
 >   if (method.isDefault())
 >     return InvocationHandler. invokeDefault(proxy, method, args);
