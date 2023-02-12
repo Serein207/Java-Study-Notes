@@ -23,7 +23,7 @@
 这个接口只有一个方法：
 
 ```java
-Object invoke(Object proxy,Method method,Object[]args)
+Object invoke(Object proxy, Method method, Object[] args)
 ```
 
 无论何时调用代理对象的方法，都会调用这个调用处理器的 `invoke` 方法，并提供 `Method` 对象和原调用的参数。
